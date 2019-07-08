@@ -64,6 +64,24 @@ export const ALL_VIEWS = deepFreeze([
     ],
     columnWidths: ['3fr', '70px', '70px', '1fr', '1.5fr'],
   },
+  {
+    id: 'transactions',
+    name: 'Transactions',
+    data: {
+      fields: ['event', 'type', 'project', 'user', 'time'],
+      orderby: ['-timestamp', '-id'],
+      query: 'event.type:transaction',
+    },
+    tags: [
+      'event.type',
+      'release',
+      'project.name',
+      'user.email',
+      'user.ip',
+      'environment',
+    ],
+    columnWidths: ['3fr', '70px', '70px', '1fr', '1.5fr'],
+  },
 ]);
 
 /**
