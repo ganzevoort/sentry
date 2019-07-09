@@ -6,7 +6,6 @@ from celery.task import current
 from django.core.urlresolvers import reverse
 from requests.exceptions import RequestException
 
-from sentry import options
 from sentry import features
 from sentry.http import safe_urlopen
 from sentry.tasks.base import instrumented_task, retry
@@ -14,7 +13,7 @@ from sentry.utils import metrics
 from sentry.utils.http import absolute_uri
 from sentry.api.serializers import serialize, AppPlatformEvent
 from sentry.models import (
-    SentryAppInstallation, Event, EventCommon, Group, Project, Organization, User, ServiceHook, ServiceHookProject, SentryApp, SnubaEvent,
+    SentryAppInstallation, EventCommon, Group, Project, Organization, User, ServiceHook, ServiceHookProject, SentryApp, SnubaEvent,
 )
 from sentry.models.sentryapp import VALID_EVENTS
 
@@ -33,11 +32,9 @@ RESOURCE_RENAMES = {
     'Group': 'issue',
 }
 
-USE_SNUBA = options.get('snuba.events-queries.enabled')
-
 TYPES = {
     'Group': Group,
-    'Error': SnubaEvent if USE_SNUBA else Event,
+    'Error': SnubaEvent,
 }
 
 

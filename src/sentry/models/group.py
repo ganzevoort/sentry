@@ -20,7 +20,7 @@ from django.utils import timezone
 from django.utils.http import urlencode
 from django.utils.translation import ugettext_lazy as _
 
-from sentry import eventtypes, tagstore, options
+from sentry import eventtypes, tagstore
 from sentry.constants import (
     DEFAULT_LOGGER_NAME, EVENT_ORDERING_KEY, LOG_LEVELS, MAX_CULPRIT_LENGTH
 )
@@ -407,12 +407,6 @@ class Group(Model):
         return self._latest_event
 
     def get_latest_event_for_environments(self, environments=()):
-        use_snuba = options.get('snuba.events-queries.enabled')
-
-        # Fetch without environment if Snuba is not enabled
-        if not use_snuba:
-            return self.get_latest_event()
-
         return get_oldest_or_latest_event_for_environments(
             EventOrdering.LATEST,
             environments=environments,
@@ -436,12 +430,6 @@ class Group(Model):
         return self._oldest_event
 
     def get_oldest_event_for_environments(self, environments=()):
-        use_snuba = options.get('snuba.events-queries.enabled')
-
-        # Fetch without environment if Snuba is not enabled
-        if not use_snuba:
-            return self.get_oldest_event()
-
         return get_oldest_or_latest_event_for_environments(
             EventOrdering.OLDEST,
             environments=environments,
